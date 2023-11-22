@@ -3,12 +3,20 @@
     <%@ page import="java.sql.*, java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="css/home.css">
 <title>Insert title here</title>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
 </head>
 <body>
 	<section id="home">
@@ -25,22 +33,36 @@
         <table>
             <tr>
                 <th>Name</th>
-                <td>John Doe</td>
+                <td id="name"></td>
                 
                 
             </tr>
             <tr>
                 <th>Email</th>
-                <td>john@example.com</td>
+                <td id="email"></td>
                 
             </tr>
             <tr>
             	<th>Contact No.</th>
-            	<td>123-456-7890</td>
+            	<td id="phone"></td>
+            </tr>
+             <tr>
+            	<th>Country</th>
+            	<td id="country"></td>
             </tr>
         </table>
         
-        <button class="logoutbtn">Logout</button>
+        
+          <div class="actions">
+  		
+  	  <form id="logout-form" action="https://api.asgardeo.io/t/org8d13s/oidc/logout" method="POST">
+        <input type="hidden" id="client-id" name="client_id" value="">
+        <input type="hidden" id="post-logout-redirect-uri" name="post_logout_redirect_uri" value="">
+        <input type="hidden" id="state" name="state" value="">
+        <button type="submit" class="logoutbtn">Logout</button>
+    </form>
+        
+       
     </div>
     
     
@@ -104,19 +126,20 @@
 						    <option value="CAT-005">Honda-Fit(2020) </option>
                 </select>
             </div>
+            <input type="hidden" id="usernameForInsert" name="usernameForInsert" value="" >
             <div class="form-group">
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" rows="4"></textarea>
             </div>
             <div class="form-group">
-                <input type="submit" value="Submit">
+                <input type="submit" name="submit" id="submit" value="Submit">
             </div>
         </form>
     </div>
     
      <% 
     // Database connection parameters
-    String url = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+    String url = "jdbc:mysql://172.187.178.153:3306/isec_assessment2";
     String username = "isec";
     String password = "EUHHaYAmtzbv";
     
@@ -124,7 +147,7 @@
     String mileageStr = request.getParameter("mileage");
     String vehicle_no = request.getParameter("vehicle");
     String message = request.getParameter("message");
-    String userName = "Kavindu"; //request.getParameter("usernameField");
+    String userName = request.getParameter("usernameForInsert");
     String dateStr = request.getParameter("date");
     String timeStr = request.getParameter("time");
     
@@ -172,8 +195,15 @@
 	</section>
 	
 	<section id="services">
+
 	<h1>Services</h1>
-	<div class="container">
+	<form id="serviceTable" method="post" action="#services" onclick="document.getElementById('SelectContainer').style.display='block'">
+		<input type="hidden" id="usernameForSelect" name="usernameForSelect" value="" >
+		<input type="submit" name="reservations" id="reservations" value="Cick here to see your reservations">
+	
+	
+	</form>
+	<div class="container" id="SelectContainer">
         <h1>Booking Details</h1>
         <table>
             <thead>
@@ -185,6 +215,7 @@
                     <th>Mileage</th>
                     <th>Vehicle Number</th>
                     <th>Message</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <%
@@ -197,15 +228,25 @@
             // Establish the database connection
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, username, password);
-            
+            String userNameForSelect = request.getParameter("usernameForSelect");
             // Create a SQL statement
           
             // Execute a query to retrieve booking data
             String sql = "SELECT * FROM vehicle_service WHERE username = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, "Kavindu"); // Use setString to set the parameter value
+			stmt.setString(1, userNameForSelect); // Use setString to set the parameter value
 			rs = stmt.executeQuery();
+			if(rs == null){%>
+			
+				<script>
+				
+					document.getElementById('SelectContainer').style.display='none';
+				
+				</script>
+				
+			<% }
             if (rs.next()) {
+            	 Date currentDate = new Date();
             // Iterate through the result set and display data in the table
             while (rs.next()) {
                 int bookingId = rs.getInt("booking_id");
@@ -215,6 +256,7 @@
                 String mileage = rs.getString("mileage");
                 String vehicleNumber = rs.getString("vehicle_no");
                 String message1 = rs.getString("message");
+                Date date0 = rs.getDate("date");
         %>
                 <tr>
                     <td><%= bookingId %></td>
@@ -224,10 +266,20 @@
                     <td><%= mileage %></td>
                     <td><%= vehicleNumber %></td>
                     <td><%= message1 %></td>
+                    <td><%   if(!date0.before(currentDate)){ %>
+                    	<form id="deleteRecord" method="post" action="#services" onclick="document.getElementById('SelectContainer').style.display='block'">
+							<input type="hidden" id="idForDelete" name="idForDelete" value=<%= bookingId %> >
+							<input type="submit" name="delete" id="delete" value="Delete">
+						
+						</form>
+					                    	
+                    <% } %>
                 </tr>
         <%
-        conn.close();
+      
             }}
+            
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
             out.println("Error: " + e.getMessage());
@@ -248,6 +300,127 @@
         %>
         </table>
     </div>
+    
+   
+    <%
+    
+    if (request.getParameter("delete") != null){
+		    //delete record from database
+		    PreparedStatement preparedStatement = null;
+		
+		    	try {
+		    		Class.forName("com.mysql.cj.jdbc.Driver");
+		            conn = DriverManager.getConnection(url, username, password);
+					String bookingId = request.getParameter("idForDelete");
+			    	
+			    	int id = Integer.parseInt(bookingId);	  
+		
+		    	   
+		    	    String sql = "DELETE FROM vehicle_service WHERE booking_id = ?";
+		
+		    	    preparedStatement = conn.prepareStatement(sql);
+		
+		    	    preparedStatement.setInt(1, id);
+		
+		    	    int rowsAffected = preparedStatement.executeUpdate();
+		    	    
+		    	    conn.close();
+		    	   
+		    	}catch (SQLException e) {
+		    	    e.printStackTrace();
+		    	    
+		    	} 
+		    	
+    }
+    
+    
+    %>
 	</section>
+	
+	
+<script>
+$(document).ready(function() {
+	var accessToken = localStorage.getItem('accessToken');
+	var idToken = localStorage.getItem('idToken');
+	
+	console.log(accessToken);
+	if(accessToken && idToken){
+		   var settings = {
+		            "url": 'https://api.asgardeo.io/t/org8d13s/oauth2/userinfo',
+		            "method": "GET",
+		            "timeout": 0,
+		            "headers": {
+		                "Authorization": "Bearer " + accessToken
+		            },
+		        };
+	
+		        $.ajax(settings)
+		            .done(function (response) {
+		                console.log(response);
+		                var username =  response.username;
+		                var given_name = response.given_name;
+		                var phone = response.phone_number;
+		                var email = response.email;
+		                var username = response.username;
+						var address = response.address;
+		                var country = address.country;
+		                //console.log(username);
+		               // console.log(country);
+		                
+		                
+		                document.getElementById('name').textContent = given_name;
+		                document.getElementById('email').textContent = email;
+		                document.getElementById('phone').textContent = phone;
+		                document.getElementById('country').textContent = country;
+		                
+		            
+		                localStorage.setItem('username', username);
+		            
+		                 
+		             
+		            })
+		            .fail(function (jqXHR, textStatus, errorThrown) {
+		                // Handle any errors here
+		                console.error('Error:', errorThrown);
+		                alert("Authorization error. Login again!");
+		                window.location.href = "./index.jsp";
+		            });
+	}
+	
+	
+    var username = localStorage.getItem('username')
+    console.log(username);
+     
+     document.getElementById('submit').addEventListener('click', function () {
+         // Set the username as a hidden field value in the form
+         document.getElementById('usernameForInsert').value = username;
+      });
+     
+     document.getElementById('reservations').addEventListener('click', function () {
+         // Set the username as a hidden field value in the form
+         document.getElementById('usernameForSelect').value = username;
+      });
+     
+     
+     
+     	//const idToken = localStorage.getItem('idToken');
+ 	
+ 		const state = localStorage.getItem('sessionState');
+
+ 	
+    document.getElementById("client-id").value = "2zGvdGwcZlHJf6Mvf01VIypHfzQa";
+    document.getElementById("post-logout-redirect-uri").value = "http://localhost:8080/VehicalServiceReservation/index.jsp";
+    document.getElementById("state").value = state;
+    
+    
+    
+	
+});
+	 
+	
+
+
+</script>
+
 </body>
 </html>
