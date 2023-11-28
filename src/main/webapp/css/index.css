@@ -1,44 +1,91 @@
 @charset "ISO-8859-1";
 
 .index{
+	background-image: url("https://www.bcdtravel.com/rennies/wp-content/uploads/sites/198/2023/01/The-future-of-car-rental.jpg");
 	width: 100%;
 	height: 100vh;
-	display: flex;
+	background-size: cover;
     justify-content: center; /* Horizontally center div2 */
-    align-items: center; 
-    background-color: #FFFFFF;/* Vertically center div2 */
+    align-items: center;
+    display: flex; 
+    /*background-color: #37AEE2 0%;/* Vertically center div2 */
 }
 
 .indexdetails{
 	width: 40%;
-	height: 80vh;
-	background-color: #E4E4E4;
-	display: flex;
-    justify-content: center; /* Horizontally center div2 */
-    align-items: center;
+	height: 70vh;
+	/*background-color: #E4E4E4;*/
+	background-color: rgba(0, 31, 63, 0.5);
+	/*display: flex;
+    /*justify-content: center; /* Horizontally center div2 */
+    /*align-items: center;*/
+    margin-right: 45%;
+    border-radius: 2rem;
+    border-color:  #E4E4E4;
+    border-width: 5px; 
+    border-style: solid; 
+}
+
+.indexdetails h1{
+	text-align: center;
+	width: 100%;
+	height: 10vh;
+	color: #FFBD00;
+
+}
+
+.indexdetails h4{
+	text-align: center;
+	width: 100%;
+	color: #FFE507;
+
 }
 
 
 .btn{
-  background-image: linear-gradient(-180deg, #37AEE2 0%, #1E96C8 100%);
+  background-color: #07FFCE;
   border-radius: .5rem;
   box-sizing: border-box;
-  color: #FFFFFF;
-  display: flex;
+  color: #8000ff;
+  /*display: flex;*/
   font-size: 16px;
-  justify-content: center;
+  /*justify-content: center;
+  align-items: center;*/
   padding: 1rem 1.75rem;
   text-decoration: none;
-  width: auto;
+  width: 50%;
   border: 0;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  float: right;
+  margin-right: 25%;
+}
+
+.btn2{
+  background-color: #1E9F99 ;
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #8000ff;
+  /*display: flex;*/
+  font-size: 16px;
+  /*justify-content: center;
+  align-items: center;*/
+  padding: 1rem 1.75rem;
+  text-decoration: none;
+  width: 50%;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  float: right;
+  margin-right: 25%;
 }
 
 .btn-43:hover {
-  background-image: linear-gradient(-180deg, #1D95C9 0%, #17759C 100%);
+  background-color: #B431AA;
 }
 
 @media (min-width: 768px) {

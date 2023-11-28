@@ -25,7 +25,15 @@ function authorize() {
 <body>
 <div class="index">
 <div class="indexdetails">
+	<h1>Welcome To VehicleVital</h1>
+	<h4>Sign In Using Asgardeo</h4>
 	<button class="btn" onClick="authorize()">Login</button>
+	<br><br><br><br><br><br>
+	<h4>-Don't have an Asgardeo Account-</h4>
+	
+	<a href="https://wso2.com/asgardeo/docs/get-started/create-asgardeo-account/#sign-up" target="_blank">
+  <button class="btn2">Create Account</button>
+</a>
 	</div>
 	</div>
 </body>

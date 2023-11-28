@@ -1,12 +1,13 @@
 @charset "ISO-8859-1";
 
 #home{
+	background-image: url("https://static.vecteezy.com/system/resources/previews/004/341/524/original/leasing-flat-illustration-car-rental-service-vehicle-hire-deal-automobile-purchase-auto-dealership-indonesian-business-isolated-cartoon-concept-on-white-background-vector.jpg");
 	width: 100%;
 	height: 100vh;
 	/*display: flex;
     justify-content: center; 
     align-items: center; */
-    background-color: #FFFFFF;
+    
 }
 
 .navbar {
@@ -112,7 +113,11 @@ tr:nth-child(even) {
 	/*display: flex;
     justify-content: center;
     align-items: center; */
-    background-color: #FFFFFF;
+    background-image: url("https://images.pexels.com/photos/1134857/pexels-photo-1134857.jpeg?cs=srgb&dl=pexels-jagmeet-singh-1134857.jpg&fm=jpg");
+}
+
+#serviceform h1{
+	text-align: center;
 }
 
 .container {
@@ -162,11 +167,15 @@ input[type="submit"]:hover {
 
 #services{
 	width: 100%;
-	height: 100vh;
+	height: auto;
 	/*display: flex;
     justify-content: center; 
     align-items: center; */
-    background-color: #FFFFFF;
+    background-color: rgba(0, 31, 63, 0.5);
+}
+
+#services h1{
+	text-align: center;
 }
 
 .container {
@@ -177,6 +186,11 @@ input[type="submit"]:hover {
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#serviceTable{
+	float: left;
+	margin-left: 21%;
 }
 
 /* Style the table */

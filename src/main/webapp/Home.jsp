@@ -23,8 +23,8 @@
 	
 	<div class="navbar">
         <a href="#home">Home</a>
-        <a href="#serviceform">About</a>
-        <a href="#services">Contact</a>
+        <a href="#serviceform">Make Reservation</a>
+        <a href="#services">View Reservations</a>
         <h1>Home</h1>
         
     </div>
@@ -43,7 +43,7 @@
                 
             </tr>
             <tr>
-            	<th>Contact No.</th>
+            	<th>Contact No.</th> 
             	<td id="phone"></td>
             </tr>
              <tr>
@@ -59,18 +59,20 @@
         <input type="hidden" id="client-id" name="client_id" value="">
         <input type="hidden" id="post-logout-redirect-uri" name="post_logout_redirect_uri" value="">
         <input type="hidden" id="state" name="state" value="">
+        <br><br><br><br>
         <button type="submit" class="logoutbtn">Logout</button>
     </form>
         
        
     </div>
-    
+   
     
 	</section>
+	 <hr>
 	<section id="serviceform">
-	<h1>ServicesForm</h1>
+	<h1>Make Your Reservations</h1>
 	<div class="container">
-        <h1>Contact Form</h1>
+        <h1>Reservation Form</h1>
         <form action="#" method="post">
             <div class="form-group">
                 <label for="location">Location:</label>
@@ -193,16 +195,18 @@
     %>
     
 	</section>
-	
+	<hr>
 	<section id="services">
 
-	<h1>Services</h1>
+	<h1>Your Reservations</h1>
+	<br><br>
 	<form id="serviceTable" method="post" action="#services" onclick="document.getElementById('SelectContainer').style.display='block'">
 		<input type="hidden" id="usernameForSelect" name="usernameForSelect" value="" >
 		<input type="submit" name="reservations" id="reservations" value="Cick here to see your reservations">
 	
 	
 	</form>
+	<br><br>
 	<div class="container" id="SelectContainer">
         <h1>Booking Details</h1>
         <table>
